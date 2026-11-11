@@ -113,8 +113,9 @@ var GSF = (function(){
     var eind=Math.atan2(P[1]-A1[1],P[0]-A1[0])*180/Math.PI;
     // de ladder: gedragen door het eerste figuur, daarna tegen de paal gezet
     var T0L=(LX-VAN)/SNEL, DL=1.9+T0L+.9, HOEK=82.2, lk='';
-    [[0,VAN,1,1],[.3,VAN,1,1],[1.9,VAN,1,1],[1.9+T0L,LX,1,1],[DL,0,0,1]].forEach(function(p){
-      lk+=(p[0]/DL*100).toFixed(2)+'%{opacity:'+p[3]+';transform:'+(p[2]?'translate('+(p[1]-110-962)+'px,-79px) rotate('+HOEK+'deg)':'translate(0,0) rotate(0deg)')+'}';
+    // eerst staat hij als tekening rechtop op de middelste pagina; het eerste figuur pakt hem op zodra het tot leven komt
+    [[0,VAN,2,1],[1,VAN,2,1],[1.75,VAN,1,1],[1.9,VAN,1,1],[1.9+T0L,LX,1,1],[DL,0,0,1]].forEach(function(p){
+      lk+=(p[0]/DL*100).toFixed(2)+'%{opacity:'+p[3]+';transform:'+(p[2]===2?'translate(-812px,-3px) rotate(0deg)':p[2]?'translate('+(p[1]-110-962)+'px,-79px) rotate('+HOEK+'deg)':'translate(0,0) rotate(0deg)')+'}';
     });
     // klimmen: sport voor sport omhoog, even blijven staan, en weer omlaag
     var KD=3.6, kk='', stap=function(t,k){kk+=(t/KD*100).toFixed(2)+'%{transform:translate('+(18*k/5).toFixed(1)+'px,'+(-123*k/5).toFixed(1)+'px)}';};
