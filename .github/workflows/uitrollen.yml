@@ -28,10 +28,18 @@ jobs:
           set -e
           test -n "$SFTP_HOST" && test -n "$SFTP_GEBRUIKER" && test -n "$SFTP_WACHTWOORD" || { echo "Een van de drie geheimen ontbreekt in de omgeving productie."; exit 1; }
           BASIS='set sftp:auto-confirm yes; set net:max-retries 2; set net:timeout 20; set cmd:fail-exit yes;'
-          L() { LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS $1; bye"; }
+          # FTP alleen versleuteld, met controle van het certificaat van de server.
+          BASIS="$BASIS set ftp:ssl-force yes; set ftp:ssl-protect-data yes;"
+          SOORT=sftp
+          L() { LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "$SOORT://$SFTP_HOST" -e "$BASIS $1; bye"; }
           # Eerst de verbinding testen, zodat een fout hier zichtbaar is.
           echo "Verbinding testen en startmap tonen:"
-          L "pwd; cls -1" || { echo "Inloggen via SFTP lukte niet. Controleer host, gebruiker, wachtwoord en of SFTP/SSH aanstaat voor dit account."; exit 1; }
+          if ! L "pwd; cls -1"; then
+            echo "SFTP lukte niet. Nu via versleuteld FTP:"
+            SOORT=ftp
+            L "pwd; cls -1" || { echo "Inloggen lukte niet via SFTP en niet via versleuteld FTP. Controleer host, gebruiker en wachtwoord."; exit 1; }
+          fi
+          echo "Verbonden via $SOORT."
           # Zoek de webmap: eerst de map van het domein, anders public_html, anders de startmap zelf als daar al een index staat.
           DOEL=""
           for MAP in domains/gevaarlijkspel.nl/public_html public_html private_html httpdocs www; do
