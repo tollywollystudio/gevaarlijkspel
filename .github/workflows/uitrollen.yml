@@ -18,14 +18,9 @@ jobs:
 
       - name: lftp installeren
         run: |
-          for poging in 1 2 3 4; do
-            command -v lftp && break
-            sudo apt-get update -qq || true
-            sudo apt-get install -y -qq lftp && break
-            echo "installeren lukte niet (poging $poging), even wachten"
-            sleep 30
-          done
-          command -v lftp
+          command -v lftp && exit 0
+          timeout 60 sudo apt-get update -qq || true
+          timeout 120 sudo apt-get install -y -qq lftp || echo "lftp is niet te installeren; de reserve-uploader neemt het over"
 
       - name: Versienummer aan stijl en scripts hangen
         run: |
@@ -41,6 +36,12 @@ jobs:
         run: |
           set -e
           test -n "$SFTP_HOST" && test -n "$SFTP_GEBRUIKER" && test -n "$SFTP_WACHTWOORD" || { echo "Een van de drie geheimen ontbreekt in de omgeving productie."; exit 1; }
+          if ! command -v lftp >/dev/null; then
+            python3 -m venv /tmp/uitrol && /tmp/uitrol/bin/pip install -q paramiko || echo "paramiko niet beschikbaar, alleen versleuteld FTP"
+            PY=/tmp/uitrol/bin/python; test -x "$PY" || PY=python3
+            "$PY" .github/uitrol.py
+            exit 0
+          fi
           BASIS='set sftp:auto-confirm yes; set net:max-retries 2; set net:timeout 20; set cmd:fail-exit yes;'
           # FTP alleen versleuteld, met controle van het certificaat van de server.
           BASIS="$BASIS set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:ca-file /etc/ssl/certs/ca-certificates.crt;"
