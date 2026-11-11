@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   uitrollen:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: productie
     steps:
       - uses: actions/checkout@v4
