@@ -339,6 +339,7 @@
     <h2>stel met onze spelleiders een programma samen voor jouw <span class="z">case.</span></h2>
     <p style="margin-top:16px;max-width:50ch">Vertel ons over jouw wijk, school of regio. In een eerste gesprek van een half uur zetten we samen een opzet neer: welk scenario, welke programma’s en wat het moet opleveren.</p>
     <dl class="bereik">
+      <dt class="mono">mail</dt><dd><a href="mailto:info@gevaarlijkspel.nl">info@gevaarlijkspel.nl</a></dd>
       <dt class="mono">bel</dt><dd>078 204 95 13</dd>
     </dl>
   </div>
@@ -382,7 +383,7 @@
     tk.disabled=true;tm.textContent='versturen…';
     fetch('terugbel.php',{method:'POST',body:new FormData(tf)}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(d){
       if(d&&d.ok){tf.reset();tm.textContent='gelukt. we bellen je zo snel mogelijk terug.';}else{return Promise.reject();}
-    }).catch(function(){tm.textContent='versturen lukte niet. bel ons op 078 204 95 13.';}).then(function(){tk.disabled=false;});
+    }).catch(function(){tm.textContent='versturen lukte niet. bel 078 204 95 13 of mail info@gevaarlijkspel.nl.';}).then(function(){tk.disabled=false;});
   });
 
   // de toets
