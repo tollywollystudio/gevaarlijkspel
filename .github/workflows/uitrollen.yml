@@ -19,6 +19,12 @@ jobs:
       - name: lftp installeren
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
+      - name: Versienummer aan stijl en scripts hangen
+        run: |
+          V="${GITHUB_SHA:0:8}"
+          sed -i -E "s/(gs\.css|gs\.js|figuren\.js)\"/\1?v=$V\"/g" *.html
+          grep -c "?v=$V" *.html
+
       - name: Bestanden naar de server sturen
         env:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
