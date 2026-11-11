@@ -53,7 +53,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .kop .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:58px;flex-wrap:wrap;padding-block:8px}
 .wm{font-size:1.45rem;text-decoration:none;white-space:nowrap}
 .wm span{color:var(--zalm-d)}
-.wm small{display:block;margin-top:5px;font:400 .62rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--inkt2);white-space:normal}
 .kop nav{display:flex;gap:4px 18px;flex-wrap:wrap}
 .kop nav a{text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
 .kop nav a:hover,.kop nav a[aria-current="page"]{border-bottom-color:var(--zalm)}
@@ -119,6 +118,8 @@ a.pk:hover{background:#fff}
 .voet{border-top:var(--lijn);padding-block:44px 64px}
 .voet .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .voet p{max-width:44ch}
+.voet .slogan{flex:1 0 100%;max-width:none;font:600 clamp(2.4rem,8vw,5.6rem)/.95 var(--f-tekst);letter-spacing:-.04em;margin-bottom:10px}
+.voet .slogan span{color:var(--zalm-d)}
 
 /* reageerknop voor collega's */
 .reageer{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--inkt);color:var(--papier);text-decoration:none;border-radius:999px;padding:11px 16px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 0 0 3px var(--papier)}
