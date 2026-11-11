@@ -29,7 +29,7 @@ jobs:
           test -n "$SFTP_HOST" && test -n "$SFTP_GEBRUIKER" && test -n "$SFTP_WACHTWOORD" || { echo "Een van de drie geheimen ontbreekt in de omgeving productie."; exit 1; }
           BASIS='set sftp:auto-confirm yes; set net:max-retries 2; set net:timeout 20; set cmd:fail-exit yes;'
           # FTP alleen versleuteld, met controle van het certificaat van de server.
-          BASIS="$BASIS set ftp:ssl-force yes; set ftp:ssl-protect-data yes;"
+          BASIS="$BASIS set ftp:ssl-force yes; set ftp:ssl-protect-data yes; set ssl:ca-file /etc/ssl/certs/ca-certificates.crt;"
           SOORT=sftp
           L() { LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "$SOORT://$SFTP_HOST" -e "$BASIS $1; bye"; }
           # Eerst de verbinding testen, zodat een fout hier zichtbaar is.
