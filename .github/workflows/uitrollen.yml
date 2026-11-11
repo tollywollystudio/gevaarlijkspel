@@ -25,7 +25,7 @@ jobs:
       - name: Versienummer aan stijl en scripts hangen
         run: |
           V="${GITHUB_SHA:0:8}"
-          sed -i -E "s/(gs\.css|gs\.js|figuren\.js)\"/\1?v=$V\"/g" *.html
+          sed -i -E "s/(gs\.css|gs\.js|figuren\.js|stats\.js|fonts\.css)\"/\1?v=$V\"/g" *.html
           grep -c "?v=$V" *.html
 
       - name: Bestanden naar de server sturen
