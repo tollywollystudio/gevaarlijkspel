@@ -30,6 +30,7 @@
 @media (max-width:860px){.case{grid-template-columns:1fr;gap:20px}.case:nth-of-type(even) .beeld{order:0}.tijd{grid-template-columns:1fr 1fr}}
 .themablok{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:30px;align-items:start;padding:30px;background:var(--kaart);border:var(--lijn);border-radius:var(--schets)}
 .themablok h2{font-size:clamp(1.7rem,3.8vw,2.5rem)}
+main{overflow-x:clip}
 .caseplaat{border-radius:var(--schets);transform:rotate(-1deg)}
 @media (max-width:860px){.themablok{grid-template-columns:1fr;padding:22px}}
 </style></head><body>
@@ -84,7 +85,7 @@
   </article>
 
   <article class="case" id="kookkaravaan-eendracht">
-    <div class="beeld"><div class="toneel eenmaal caseplaat" id="plaat-koken"></div></div>
+    <div class="beeld"><img class="foto" src="img/c-eendracht.jpg" alt="Buren eten samen aan een lange tafel bij kaarslicht in de Eendracht" loading="lazy"></div>
     <div>
       <span class="label o">noodpakket kookkaravaan</span>
       <h2 style="margin-top:14px">koken in de Eendracht.</h2>
@@ -93,7 +94,7 @@
     </div>
   </article>
   <article class="case" id="vloedcamp">
-    <div class="beeld"><div class="toneel eenmaal caseplaat" id="plaat-vloedcamp"></div></div>
+    <div class="beeld"><img class="foto" src="img/c-vloedcamp.jpg" alt="Kinderen klimmen over een hindernisbaan boven het water, onder slingers met vlaggetjes" loading="lazy"></div>
     <div>
       <span class="label o">risicovol spelen · school</span>
       <h2 style="margin-top:14px">het Vloedcamp van de Redders van Dordt.</h2>
@@ -103,7 +104,7 @@
     </div>
   </article>
   <article class="case" id="stormstad">
-    <div class="beeld"><div class="toneel caseplaat" id="plaat-stormstad"></div></div>
+    <div class="beeld"><img class="foto" src="img/c-stormstad.jpg" alt="Maquette van een huis op palen, gebouwd door leerlingen" loading="lazy"></div>
     <div>
       <span class="label b">stormstad · klas</span>
       <h2 style="margin-top:14px">bouw mee onder NAP.</h2>
@@ -112,7 +113,7 @@
     </div>
   </article>
   <article class="case" id="hoog-en-droog">
-    <div class="beeld"><div class="toneel eenmaal caseplaat" id="plaat-hoogdroog"></div></div>
+    <div class="beeld"><img class="foto" src="img/c-hoogdroog.jpg" alt="Een koor zingt in het donker met lichtjes in de hand, met de stad achter het raam" loading="lazy"></div>
     <div>
       <span class="label b">op maat · hoog &amp; droog zolderroute</span>
       <h2 style="margin-top:14px">van zolder naar zolder door de stad.</h2>
@@ -132,7 +133,7 @@
     </div>
   </article>
   <article class="case" id="onderstroom">
-    <div class="beeld"><img class="foto" src="img/os-1.jpg" alt="Zwevende led-panelen boven de straat tonen een wateroppervlak met drijvende voorwerpen" loading="lazy"></div>
+    <div class="beeld"><img class="foto" style="aspect-ratio:4/5;object-fit:cover" src="img/c-onderstroom.jpg" alt="Bezoekers kijken in een smalle straat omhoog naar zwevende led-panelen die een wateroppervlak tonen" loading="lazy"></div>
     <div>
       <span class="label b">festival voor de vloed · installatie</span>
       <h2 style="margin-top:14px">Onderstroom.</h2>
@@ -193,6 +194,6 @@
 <script src="figuren.js"></script>
 <script src="gs.js"></script>
 <script>
-if(typeof GSF!=="undefined"){GSF.defs();document.getElementById("plaat-vloedcamp").innerHTML=GSF.oefening("zandzakken");document.getElementById("plaat-stormstad").innerHTML=GSF.scene("weer");document.getElementById("plaat-hoogdroog").innerHTML=GSF.oefening("trap");document.getElementById("plaat-koken").innerHTML=GSF.oefening("soep");}
+if(typeof GSF!=="undefined"){GSF.defs();}
 </script>
 </body></html>
