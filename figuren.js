@@ -175,13 +175,13 @@ var GSF = (function(){
     '<g class="bootje">'+fig({x:172,y:152,s:.9})+fig({x:200,y:152,s:.9,r:'up'})+'<path class="bgvlak" d="M148 138H224L213 160H159z"/><path class="bl" d="M148 138H224L213 160H159z"/></g>';}
   function gever(x,i){return '<g style="--fi:'+i+'">'+fig({x:x,y:172,s:1.15,r:'fwd',l:'fwd',cls:'doorgeef'})+'</g>';}
   var OEF={
-   zandzakken:['zandzakken doorgeven','Drie buren geven zandzakken van hand tot hand door en stapelen ze voor een deur',
-    '<g class="prop"><rect class="wit" x="196" y="92" width="38" height="82"/><circle class="pv" cx="203" cy="136" r="2.5"/>'+
-    '<rect class="wit" x="-6" y="161" width="26" height="13" rx="6"/><rect class="wit" x="-10" y="148" width="26" height="13" rx="6"/></g>'+
+   zandzakken:['zandzakken doorgeven','Drie buren geven zandzakken van hand tot hand door, van een stapel links naar een muurtje voor een deur',
+    '<g class="prop"><path class="wit" d="M190 174V84H238V174"/><path d="M182 84H246"/><circle class="pv" cx="199" cy="134" r="2.5"/>'+
+    '<rect class="wit" x="-58" y="161" width="28" height="13" rx="6"/><rect class="wit" x="-30" y="161" width="28" height="13" rx="6"/><rect class="wit" x="-44" y="148" width="28" height="13" rx="6"/></g>'+
     gever(44,0)+gever(102,1)+gever(160,2)+
-    '<g class="prop"><rect class="wit" x="182" y="161" width="28" height="13" rx="6"/><rect class="wit" x="208" y="161" width="28" height="13" rx="6"/>'+
-    '<rect class="wit z1" x="182" y="148" width="28" height="13" rx="6"/><rect class="wit z2" x="208" y="148" width="28" height="13" rx="6"/><rect class="wit z3" x="195" y="135" width="28" height="13" rx="6"/>'+
-    '<g class="zakloop"><rect class="wit" x="-14" y="-7" width="28" height="13" rx="6"/></g></g>'+grond(6,234,174)],
+    '<g class="prop"><rect class="wit" x="186" y="161" width="28" height="13" rx="6"/><rect class="wit" x="214" y="161" width="28" height="13" rx="6"/>'+
+    '<rect class="wit z1" x="200" y="148" width="28" height="13" rx="6"/><rect class="wit z2" x="186" y="135" width="28" height="13" rx="6"/><rect class="wit z3" x="214" y="135" width="28" height="13" rx="6"/>'+
+    '<g class="zakloop"><rect class="wit" x="-14" y="-7" width="28" height="13" rx="6"/></g></g>'+grond(-62,252,174),'-66 0 322 200'],
    meterkast:['zaklamp naar de meterkast','Een ouder en een kind lopen met een zaklamp naar de meterkast; de deur gaat open en er hangt een ingevuld plan',
     '<g class="prop"><rect class="wit" x="160" y="64" width="56" height="110"/><rect class="wit" x="170" y="80" width="36" height="46"/><path style="stroke-width:1.5" d="M176 92h24M176 102h24M176 112h14"/>'+
     '<path class="vink" d="M178 142l8 9l16 -20" style="stroke:var(--zalm);stroke-width:5"/></g>'+
@@ -201,7 +201,7 @@ var GSF = (function(){
    trapbreed:[OEF.trap[1],'<g transform="translate(1080,0)">'+trapDelen()+'</g>'+waterband(0,2400,136,'stijgwater')+'<path class="bl" d="'+golf(0,2400,199)+'"/>'],
    vlagbreed:[OEF.vlag[1],'<g transform="translate(1080,0)">'+vlagDelen()+'</g>'+waterband(0,2400,150)+'<path class="bl" d="'+golf(0,2400,199)+'"/>']
   };
-  function oefening(key){if(BREED[key])return '<svg class="fg" viewBox="0 0 2400 200" preserveAspectRatio="xMidYMax slice" role="img" aria-label="'+BREED[key][0]+'"><g class="w">'+BREED[key][1]+'</g></svg>';var o=OEF[key];return svg('0 0 240 200',o[1],o[2]);}
+  function oefening(key){if(BREED[key])return '<svg class="fg" viewBox="0 0 2400 200" preserveAspectRatio="xMidYMax slice" role="img" aria-label="'+BREED[key][0]+'"><g class="w">'+BREED[key][1]+'</g></svg>';var o=OEF[key];return svg(o[3]||'0 0 240 200',o[1],o[2]);}
   function oefeningNaam(key){return OEF[key][0];}
   // één losse buur, om op een lijn te zetten
   var LOS=[{r:'up',cls:'zwaait'},{extra:HOND},{r:'fwd',extra:PAN},{extra:KOPTEL+KEYCORD},{r:'laag',extra:STOK},{zit:true,extra:ROL},{s:.7,extra:KEYCORD}];

@@ -315,9 +315,9 @@ a.pk:hover{background:#fff}
   .speel .fg .vlagstok{animation:f-vlaguit .8s ease-out .6s backwards}
   .speel .fg .bootje{animation:f-boot 3s ease-out 1.2s backwards}
 }
-@keyframes f-zak{0%{opacity:1;transform:translate(8px,154px)}9.3%{opacity:1;transform:translate(15px,126px)}26%{opacity:1;transform:translate(73px,126px)}42.6%{opacity:1;transform:translate(131px,126px)}59.3%{opacity:1;transform:translate(189px,126px)}74%{opacity:1;transform:translate(209px,142px)}75%,100%{opacity:0;transform:translate(209px,142px)}}
-@keyframes f-ontvang{0%{transform:rotate(-76deg)}7%,13%{transform:rotate(0)}23%,100%{transform:rotate(-76deg)}}
-@keyframes f-geefdoor{0%,17%{transform:rotate(76deg)}24%,30%{transform:rotate(0)}40%,100%{transform:rotate(76deg)}}
+@keyframes f-zak{0%{opacity:1;transform:translate(-30px,141px)}9.3%{opacity:1;transform:translate(15px,126px)}26%{opacity:1;transform:translate(73px,126px)}42.6%{opacity:1;transform:translate(131px,126px)}59.3%{opacity:1;transform:translate(189px,126px)}74%{opacity:1;transform:translate(214px,138px)}75%,100%{opacity:0;transform:translate(214px,138px)}}
+@keyframes f-ontvang{0%{transform:rotate(-58deg)}7%,13%{transform:rotate(0)}23%,100%{transform:rotate(-58deg)}}
+@keyframes f-geefdoor{0%,17%{transform:rotate(58deg)}24%,30%{transform:rotate(0)}40%,100%{transform:rotate(58deg)}}
 @keyframes f-stijg{from{transform:translateY(74px)}}
 @keyframes f-aanloop{from{transform:translate(-78px,0)}}
 @keyframes f-deur{from{transform:scaleX(1)}}
@@ -336,8 +336,9 @@ a.pk:hover{background:#fff}
 .breker .fg .grondlijn{display:none}
 @media (max-width:860px){.breker{margin-bottom:-30px}.breker figure{width:min(250px,58%)}.breker p{padding-bottom:44px}}
 
-.fg .doorgeef .arm-l{transform:rotate(-76deg)}
-.fg .doorgeef .arm-r{transform:rotate(76deg)}
+.fg .doorgeef .arm-l{transform:rotate(-58deg)}
+.fg .doorgeef .arm-r{transform:rotate(58deg)}
+.breker figure[data-oef="zandzakken"]{width:min(440px,70%)}
 /* brede brekers: het water loopt over de hele breedte */
 .breker.breed{margin-bottom:0;padding-top:0}
 .breker.breed .wrap{position:absolute;left:0;right:0;top:22px;z-index:1;display:block}
@@ -360,3 +361,4 @@ a.pk:hover{background:#fff}
 @keyframes f-huppel{0%,78%,100%{transform:translateY(0)}88%{transform:translateY(-14px)}}
 @keyframes f-rol{from{transform:translateX(-7px)}to{transform:translateX(7px)}}
 @keyframes f-kwispel{from{transform:rotate(-18deg)}to{transform:rotate(22deg)}}
+@media (max-width:860px){.breker figure[data-oef="zandzakken"]{width:min(250px,58%)}}
