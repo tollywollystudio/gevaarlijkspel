@@ -1,0 +1,38 @@
+name: Uitrollen naar mijn.host
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: uitrollen
+  cancel-in-progress: false
+
+jobs:
+  uitrollen:
+    runs-on: ubuntu-latest
+    environment: productie
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: lftp installeren
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Bestanden naar de server sturen
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_GEBRUIKER: ${{ secrets.SFTP_GEBRUIKER }}
+          SFTP_WACHTWOORD: ${{ secrets.SFTP_WACHTWOORD }}
+        run: |
+          set -e
+          test -n "$SFTP_HOST" && test -n "$SFTP_GEBRUIKER" && test -n "$SFTP_WACHTWOORD" || { echo "Een van de drie geheimen ontbreekt in de omgeving productie."; exit 1; }
+          BASIS='set sftp:auto-confirm yes; set net:max-retries 2; set net:timeout 20; set cmd:fail-exit yes;'
+          # Zoek de webmap: eerst de map van het domein, anders public_html in de startmap.
+          DOEL=""
+          for MAP in domains/gevaarlijkspel.nl/public_html public_html; do
+            if LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS cd $MAP; bye" >/dev/null 2>&1; then DOEL="$MAP"; break; fi
+          done
+          test -n "$DOEL" || { echo "Geen webmap gevonden (domains/gevaarlijkspel.nl/public_html of public_html)."; exit 1; }
+          echo "Webmap: $DOEL"
+          LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS mirror --reverse --verbose --only-newer --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude README.md ./ $DOEL/; bye"
