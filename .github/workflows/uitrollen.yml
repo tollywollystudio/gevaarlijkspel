@@ -28,11 +28,15 @@ jobs:
           set -e
           test -n "$SFTP_HOST" && test -n "$SFTP_GEBRUIKER" && test -n "$SFTP_WACHTWOORD" || { echo "Een van de drie geheimen ontbreekt in de omgeving productie."; exit 1; }
           BASIS='set sftp:auto-confirm yes; set net:max-retries 2; set net:timeout 20; set cmd:fail-exit yes;'
-          # Zoek de webmap: eerst de map van het domein, anders public_html in de startmap.
+          L() { LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS $1; bye"; }
+          # Eerst de verbinding testen, zodat een fout hier zichtbaar is.
+          echo "Verbinding testen en startmap tonen:"
+          L "pwd; cls -1" || { echo "Inloggen via SFTP lukte niet. Controleer host, gebruiker, wachtwoord en of SFTP/SSH aanstaat voor dit account."; exit 1; }
+          # Zoek de webmap: eerst de map van het domein, anders public_html, anders de startmap zelf als daar al een index staat.
           DOEL=""
-          for MAP in domains/gevaarlijkspel.nl/public_html public_html; do
-            if LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS cd $MAP; bye" >/dev/null 2>&1; then DOEL="$MAP"; break; fi
+          for MAP in domains/gevaarlijkspel.nl/public_html public_html private_html httpdocs www; do
+            if L "cd $MAP" >/dev/null 2>&1; then DOEL="$MAP"; break; fi
           done
-          test -n "$DOEL" || { echo "Geen webmap gevonden (domains/gevaarlijkspel.nl/public_html of public_html)."; exit 1; }
+          test -n "$DOEL" || { echo "Geen webmap gevonden. Zie de lijst hierboven voor wat er in de startmap staat."; exit 1; }
           echo "Webmap: $DOEL"
-          LFTP_PASSWORD="$SFTP_WACHTWOORD" lftp --env-password -u "$SFTP_GEBRUIKER" "sftp://$SFTP_HOST" -e "$BASIS mirror --reverse --verbose --only-newer --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude README.md ./ $DOEL/; bye"
+          L "mirror --reverse --verbose --only-newer --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude README.md ./ $DOEL/"
