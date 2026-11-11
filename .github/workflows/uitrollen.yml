@@ -17,7 +17,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: lftp installeren
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+        run: |
+          for poging in 1 2 3 4; do
+            command -v lftp && break
+            sudo apt-get update -qq || true
+            sudo apt-get install -y -qq lftp && break
+            echo "installeren lukte niet (poging $poging), even wachten"
+            sleep 30
+          done
+          command -v lftp
 
       - name: Versienummer aan stijl en scripts hangen
         run: |
