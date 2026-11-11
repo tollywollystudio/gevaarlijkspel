@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>programma’s · gevaarlijk spel.</title>
+<meta name="description" content="Acht programma’s om te oefenen voor een noodsituatie, van de Silent Noodshow tot Stormstad.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="programma’s · gevaarlijk spel.">
+<meta property="og:description" content="Acht programma’s om te oefenen voor een noodsituatie, van de Silent Noodshow tot Stormstad.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:image" content="https://www.gevaarlijkspel.nl/img/deel.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="gs.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.filters{display:grid;gap:14px;margin-top:30px}
+.frij{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.frij .mono{min-width:110px}
+.chip{border:var(--lijn);background:var(--kaart);color:var(--inkt);padding:8px 14px;border-radius:999px;cursor:pointer;font:500 .92rem var(--f-tekst);display:inline-flex;align-items:center;gap:8px}
+.chip[aria-pressed="true"]{background:var(--inkt);color:var(--papier)}
+.chip[aria-pressed="true"] .scen i{filter:invert(1)}
+.detail{display:grid;gap:0;margin-top:40px}
+.pd{display:grid;grid-template-columns:260px 1fr;gap:32px;padding-block:38px;border-top:var(--lijn)}
+.pfoto{width:100%;aspect-ratio:4/3;object-fit:cover}
+.pd .duo,.pfoto.leeg{margin-top:16px}
+.pfoto.leeg{display:grid;place-items:center;border:2px dashed var(--blauw)}
+.getuige{margin:22px 0 0;padding:16px 20px;border-left:6px solid var(--zalm);background:var(--kaart)}
+.getuige p{font-size:1.15rem;font-weight:500;max-width:60ch}
+.getuige footer{margin-top:8px;color:var(--inkt2)}
+.pd>*{min-width:0}
+.pd .nr{font:600 3.4rem/.85 var(--f-tekst);letter-spacing:-.04em;color:var(--zalm-d);font-variant-numeric:tabular-nums}
+.pd .meta{display:grid;gap:6px;margin-top:12px}
+.pd h2{font-size:clamp(1.8rem,4vw,2.6rem)}
+.pd .kolommen{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;margin-top:18px}
+.pd .kolommen>div{min-width:0}
+.pd .kolommen p.mono{margin-bottom:6px;color:var(--inkt2)}
+.pd .scens{display:flex;gap:6px 16px;flex-wrap:wrap;margin-top:14px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+.pd[hidden]{display:none}
+.leeg-melding{padding:30px 0;border-top:var(--lijn)}
+.uitleg{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:20px}
+.uitleg>div{border-top:var(--lijn);padding-top:10px;min-width:0}
+.uitleg .scen{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase}
+.uitleg .scen i{width:60px}
+@media (max-width:860px){.pd{grid-template-columns:1fr;gap:10px}.pfoto{max-width:420px}.pd .kolommen{grid-template-columns:1fr}.uitleg{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<header class="kop"><div class="wrap">
+  <a class="wm" href="index.html">gevaarlijk <span>spel.</span></a>
+  <nav class="mono" aria-label="hoofdmenu"><a href="programmas.html" aria-current="page">programma’s</a><a href="cases.html">cases</a><a href="voor-wie.html">voor wie</a><a href="index.html#contact">contact</a></nav>
+</div></header>
+
+<main>
+<section class="wrap" style="padding-block:56px 20px">
+  <span class="label">programma’s</span>
+  <h1 style="margin-top:16px">acht manieren om te <span class="z">oefenen.</span></h1>
+  <p class="groot" style="margin-top:18px">Elk programma speelt een of meer scenario’s. Kies wat past bij jouw wijk, school of rapportage.</p>
+  <div class="scenrij" id="scenrij" style="margin-top:24px"></div>
+
+  <div class="filters" role="group" aria-label="filter programma’s">
+    <div class="frij" id="f-scen"><span class="mono">scenario</span></div>
+    <div class="frij" id="f-voor"><span class="mono">voor</span></div>
+  </div>
+</section>
+
+<section class="wrap detail" id="detail" aria-live="polite"></section>
+<section class="wrap" style="padding-block:10px 30px">
+  <div class="opmaat">
+    <div><span class="label p">staat jouw vraag er niet tussen?</span><h3 style="margin-top:12px">we ontwikkelen ook op maat.</h3></div>
+    <p>Heb je een idee voor een eigen scenario, doelgroep of plek? Dan bouwen onze makers en spelleiders er een programma voor, van eerste idee tot spelmateriaal uit onze eigen werkplaats. Zo maakten we het overstromingsscenario van <a href="cases.html#risk-factory">de Risk Factory</a>, de <a href="cases.html#hoog-en-droog">Hoog &amp; Droog Zolderroute</a> en de kunstinstallatie <a href="cases.html#golden-connection">The Golden Connection</a> over het thema PFAS.</p>
+    <a class="knop" href="index.html#contact">vertel ons je vraag</a>
+  </div>
+</section>
+
+<section class="wrap" style="padding-block:20px 80px">
+  <div class="twee" style="border-top:var(--lijn);padding-top:30px">
+    <div><h2>weet je het nog niet?</h2><p style="margin-top:12px;max-width:46ch">Stel samen met een van onze spelleiders een programma samen voor jouw case. Veel gemeenten beginnen met een Silent Noodshow en bouwen door naar een Wijkspel.</p></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><a class="knop" href="index.html#contact">plan een gesprek</a><a class="knop leeg" href="voor-wie.html">wat past bij jou</a></div>
+  </div>
+</section>
+</main>
+
+<footer class="voet"><div class="wrap">
+  <p class="mono" style="line-height:1.9">gevaarlijk spel is een programma van Stichting Lexlab en Tolly Wolly Studio, Dordrecht.</p>
+</div></footer>
+
+<script src="figuren.js"></script>
+<script src="gs.js"></script>
+<script>
+(function(){
+  GS.scenrij(document.getElementById('scenrij'),true);
+  var det=document.getElementById('detail');
+  det.innerHTML=GS.P.map(function(p){
+    return '<article class="pd" id="'+p.id+'" data-scen="'+p.scen.join(' ')+'" data-voor="'+p.voor.join(' ')+'">'+
+      '<div><div class="nr">'+p.nr+'</div><div class="meta mono"><span>'+GS.esc(p.waar)+'</span><span>'+GS.esc(p.duur)+'</span>'+(p.nieuw?'<span class="z">in ontwikkeling</span>':'')+'</div>'+
+      (p.foto?'<img class="pfoto" src="'+p.foto[0]+'" alt="'+GS.esc(p.foto[1])+'" loading="lazy">':'<div class="toneel pscene'+(p.oef?' eenmaal':'')+'">'+(p.oef?GSF.oefening(p.oef):GSF.scene(p.scen[0]))+'</div>'+(p.oef?'<p class="mono bijschrift">'+GSF.oefeningNaam(p.oef)+'</p>':''))+'</div>'+
+      '<div><h2>'+GS.esc(p.naam)+'</h2><p class="groot" style="margin-top:10px;max-width:60ch">'+GS.esc(p.kort)+'</p>'+
+      '<div class="scens">'+p.scen.map(GS.scenHtml).join('')+'</div>'+
+      '<div class="kolommen"><div><p class="mono">wat er gebeurt</p><p>'+GS.esc(p.wat)+'</p></div>'+
+      '<div><p class="mono">jij regelt</p><p>'+GS.esc(p.jij)+'</p></div>'+
+      '<div><p class="mono">wat het oplevert</p><p>'+GS.esc(p.op)+'</p></div></div>'+
+      (p.citaat?'<blockquote class="getuige"><p>“'+GS.esc(p.citaat[0])+'”</p><footer class="mono">'+GS.esc(p.citaat[1])+'</footer></blockquote>':'')+
+      '<p class="mono" style="margin-top:16px;color:var(--inkt2)">voor: '+p.voor.map(function(v){return GS.GROEP[v].naam;}).join(' · ')+'</p></div></article>';
+  }).join('')+'<p class="leeg-melding" id="leeg" hidden>Geen programma met deze combinatie. Haal een filter weg, of bel ons: vaak kan een programma in een ander scenario gespeeld worden.</p>';
+
+  var sel={scen:null,voor:null};
+  function chips(id,opties,soort,label){
+    var rij=document.getElementById(id);
+    Object.keys(opties).forEach(function(k){
+      var b=document.createElement('button');b.type='button';b.className='chip';b.id='f-'+soort+'-'+k;b.setAttribute('aria-pressed','false');
+      b.innerHTML=soort==='scen'?GS.scenHtml(k):GS.esc(label(k));
+      b.addEventListener('click',function(){sel[soort]=sel[soort]===k?null:k;rij.querySelectorAll('.chip').forEach(function(c){c.setAttribute('aria-pressed',String(c===b&&sel[soort]===k));});filter();});
+      rij.appendChild(b);
+    });
+  }
+  chips('f-scen',GS.SCEN,'scen',function(k){return k;});
+  chips('f-voor',GS.GROEP,'voor',function(k){return GS.GROEP[k].naam;});
+  function filter(){
+    var n=0;
+    det.querySelectorAll('.pd').forEach(function(a){
+      var ok=(!sel.scen||a.dataset.scen.split(' ').indexOf(sel.scen)>-1)&&(!sel.voor||a.dataset.voor.split(' ').indexOf(sel.voor)>-1);
+      a.hidden=!ok;if(ok)n++;
+    });
+    document.getElementById('leeg').hidden=n>0;
+  }
+  var g=GS.store('gs-groep');
+  if(g&&GS.GROEP[g]&&!location.hash){document.getElementById('f-voor-'+g).click();}
+  var hs=location.hash.slice(1);
+  if(hs.indexOf('s-')===0&&document.getElementById('f-scen-'+hs.slice(2))){document.getElementById('f-scen-'+hs.slice(2)).click();setTimeout(function(){document.getElementById('f-scen').scrollIntoView();},50);}
+  else if(hs){var el=document.getElementById(hs);if(el)setTimeout(function(){el.scrollIntoView();},50);}
+})();
+</script>
+</body></html>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>gevaarlijk spel. · oefenen voor als het misgaat</title>
+<meta name="description" content="Gevaarlijk spel laat buurten, scholen en gemeenten oefenen voor een overstroming, blackout of andere noodsituatie. Programma’s op straat, in de klas en op maat.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="gevaarlijk spel. · oefenen voor als het misgaat">
+<meta property="og:description" content="Gevaarlijk spel laat buurten, scholen en gemeenten oefenen voor een overstroming, blackout of andere noodsituatie. Programma’s op straat, in de klas en op maat.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:image" content="https://www.gevaarlijkspel.nl/img/deel.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="gs.css">
+<style>
+/* opening: het spel */
+.spel{position:relative}
+.scene{padding-block:84px;position:relative;overflow:hidden;border-top:var(--lijn)}
+.scene .wrap{position:relative;z-index:2}
+.scene p.groot+p.groot{margin-top:14px}
+.scene .meter{position:absolute;right:var(--gutter-r);top:96px;z-index:3;text-align:right;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+.scene .meter b{display:block;font:600 clamp(2.4rem,7vw,4.4rem)/.9 var(--f-tekst);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+
+#start{border-top:0;padding-block:56px 72px}
+.start-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:start}
+.start-grid>*{min-width:0}
+.keuze{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.koord{display:flex;align-items:center;gap:12px;padding:12px 14px;border:var(--lijn);background:var(--kaart);cursor:pointer;font:500 1rem var(--f-tekst);color:var(--inkt);text-align:left}
+.koord i{width:10px;align-self:stretch;min-height:30px;border-radius:5px}
+.koord[aria-pressed="true"]{background:var(--inkt);color:var(--papier)}
+.k-groen i{background:var(--groen)}.k-blauw i{background:var(--blauw)}.k-paars i{background:var(--paars)}.k-zalm i{background:var(--zalm)}
+.veld{display:grid;gap:6px;margin-top:16px}
+.veld input{font:500 1.05rem var(--f-tekst);padding:12px 14px;border:var(--lijn);background:var(--kaart);color:var(--inkt);border-radius:0;width:100%}
+.kaartje{position:relative;background:var(--kaart);border:var(--lijn);padding:22px 22px 20px;margin-top:46px;transform:rotate(1.4deg)}
+.kaartje::before{content:"";position:absolute;left:50%;top:-46px;width:14px;height:46px;transform:translateX(-50%);background:var(--k,var(--inkt2));border-radius:3px}
+.kaartje::after{content:"";position:absolute;left:50%;top:10px;width:22px;height:8px;transform:translateX(-50%);border:2px solid var(--inkt);border-radius:6px;background:var(--papier)}
+.kaartje dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin-top:20px}
+.kaartje dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--inkt2);padding-top:3px}
+.kaartje dd{font-weight:500}
+.kaartje .diep{font:600 3.2rem/.9 var(--f-tekst);letter-spacing:-.04em;color:var(--blauw);margin-top:14px;font-variant-numeric:tabular-nums}
+.sla{margin-top:22px;display:flex;gap:12px 18px;flex-wrap:wrap;align-items:center}
+
+/* donker */
+#donker{background:var(--nacht);color:var(--papier);border-top-color:var(--nacht);cursor:none}
+#donker .knop{cursor:pointer}
+#lamp{position:absolute;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle var(--r,190px) at var(--x,30%) var(--y,46%),rgba(7,6,11,0) 0%,rgba(7,6,11,0) 40%,rgba(7,6,11,.985) 100%)}
+#donker.aan #lamp{display:none}
+#donker.aan{cursor:auto}
+#donker .boven{position:relative;z-index:4}
+#donker .foto{border-color:var(--papier)}
+#donker .hint{position:relative;z-index:4;margin-top:22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+/* water */
+#water{background:var(--papier)}
+#golf{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--blauw);opacity:.9;z-index:1}
+#golf::before{content:"";position:absolute;left:0;right:0;top:-9px;height:10px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10'%3E%3Cpath d='M0 10V5q10-6 20 0t20 0v5z' fill='%232c5ca4'/%3E%3C/svg%3E");background-repeat:repeat-x;animation:golf 6s linear infinite}
+@keyframes golf{to{background-position:40px 0}}
+.peil{position:absolute;left:0;top:0;bottom:0;width:46px;z-index:2;border-right:var(--lijn);background:repeating-linear-gradient(to top,var(--inkt) 0 2px,transparent 2px 10%);background-size:14px 100%;background-repeat:no-repeat}
+.peil span{position:absolute;left:18px;font-family:var(--f-mono);font-size:.62rem;transform:translateY(50%)}
+#water .wrap{padding-left:max(64px,var(--gutter-l))}
+
+#water.onder .wrap,#water.onder .meter{color:var(--papier)}
+#water.onder .z{color:var(--zalm)}
+#water.onder .label{background:var(--papier);color:var(--inkt)}
+#water.onder .foto{border-color:var(--papier)}
+
+/* hitte */
+#hitte{transition:background-color .2s}
+#hitte.heet .tril{animation:tril 1.8s ease-in-out infinite}
+@keyframes tril{0%,100%{transform:skewX(0);filter:blur(0)}50%{transform:skewX(-1deg) translateY(-1px);filter:blur(.5px)}}
+
+/* offline */
+#offtekst span{transition:opacity .5s}
+#offtekst .weg{opacity:.12}
+.papiertje{background:var(--kaart);border:var(--lijn);padding:18px 20px;transform:rotate(-1deg);font-family:var(--f-mono);font-size:.86rem;line-height:1.9}
+.papiertje b{font-family:var(--f-tekst);font-weight:600;font-size:1rem;display:block;margin-bottom:6px}
+
+@media (prefers-reduced-motion:reduce){#hitte.heet .tril,#golf::before{animation:none}}
+
+/* einde oefening */
+#licht{background:var(--inkt);color:var(--papier);border-top:0;padding-block:76px 80px}
+#licht .groot{color:var(--papier)}
+#licht .knop.leeg{border-color:var(--papier);color:var(--papier)}
+#licht .knop.leeg:hover{background:rgba(244,239,230,.1)}
+.slotzin{font:600 clamp(3rem,10vw,7rem)/.88 var(--f-tekst);letter-spacing:-.05em;color:var(--zalm);margin-top:16px;text-wrap:balance}
+
+/* aanbod */
+.hero2{padding-block:72px 40px}
+.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.strip img{aspect-ratio:3/2;object-fit:cover;width:100%;border:var(--lijn)}
+.afspraak{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:34px}
+.afspraak>div{border-top:var(--lijn);padding-top:12px;min-width:0}
+.bewijs{background-color:var(--papier2)}
+.groot-getal{font:600 clamp(5rem,15vw,9.5rem)/.85 var(--f-tekst);letter-spacing:-.05em;color:var(--zalm-d);font-variant-numeric:tabular-nums}
+.groot-getal small{font-size:.36em;color:var(--inkt);letter-spacing:-.02em}
+.stem{background:var(--kaart);border:var(--lijn);padding:26px;display:grid;gap:14px}
+.stem p{font-size:1.12rem}
+.hek{background:var(--inkt);color:var(--papier);padding:34px 28px;display:flex;flex-direction:column;gap:18px;justify-content:space-between;min-height:320px;position:relative;overflow:hidden}
+.hek .big{font:600 clamp(2.6rem,7vw,4.4rem)/.9 var(--f-tekst);letter-spacing:-.04em;color:var(--zalm)}
+.hek::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(135deg,var(--zalm) 0 14px,var(--papier) 14px 28px)}
+.stappen{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.stappen li{counter-increment:s;border-top:var(--lijn);padding-top:12px;min-width:0}
+.stappen li::before{content:"week " attr(data-week);display:block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--inkt2);margin-bottom:8px}
+.stappen b{display:block;font-size:1.25rem;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.voorjou{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.voorjou a{display:grid;gap:8px;padding:16px;border:var(--lijn);text-decoration:none;background:var(--kaart);min-width:0}
+.voorjou a:hover{background:#fff}
+.voorjou a i{height:8px;border-radius:4px}
+.voorjou a.mijn{outline:4px solid var(--zalm);outline-offset:-2px}
+.bereik{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin-top:22px;align-items:baseline}
+.bereik dd{font:500 1.15rem var(--f-mono)}
+.terugbel{display:grid;gap:14px;border:var(--lijn);background:var(--kaart);padding:24px;min-width:0}
+.terugbel .label{justify-self:start}
+.terugbel label{display:grid;gap:5px}
+.terugbel input{font:500 1.05rem var(--f-tekst);padding:11px 13px;border:var(--lijn);background:var(--papier);color:var(--inkt);border-radius:0;width:100%}
+.terugbel .knop{justify-self:start}
+.contact-regel{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.contact-regel code{font:500 1.05rem var(--f-mono);user-select:all}
+
+@media (max-width:860px){
+  .start-grid{grid-template-columns:1fr}
+  .strip{grid-template-columns:repeat(3,1fr)}.strip img:nth-child(n+4){display:none}
+  .afspraak,.stappen{grid-template-columns:1fr 1fr}
+  .voorjou{grid-template-columns:1fr 1fr}
+  .scene .meter{position:static;text-align:left;margin-bottom:18px;padding-left:var(--gutter-l)}
+  #water .meter{padding-left:64px}
+  #lamp{--r:250px}
+}
+@media (max-width:520px){.keuze{grid-template-columns:1fr}.afspraak,.stappen{grid-template-columns:1fr}}
+
+/* opening: de toets */
+.topband{padding-block:10px 22px;border-bottom:var(--lijn)}
+.topzin{font-weight:600;letter-spacing:-.03em;line-height:1.05;font-size:clamp(1.4rem,3.6vw,2.4rem);margin-top:4px}
+.opening{padding-block:44px 72px}
+.opening .start-grid{align-items:center}
+.toets{list-style:none;padding:0;margin-top:26px;display:grid;gap:0;border-bottom:var(--lijn)}
+.toets li{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding-block:14px;border-top:var(--lijn)}
+.toets li>span{font-size:1.15rem;font-weight:500;min-width:0}
+.jn{display:flex;gap:6px}
+.jn button{min-width:64px;padding:10px 16px;border:var(--lijn);background:var(--kaart);color:var(--inkt);border-radius:999px;cursor:pointer;font:600 1rem var(--f-tekst)}
+.jn button[aria-pressed="true"]{background:var(--inkt);color:var(--papier)}
+.uitslag{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;margin-top:22px;min-height:112px}
+.uitslag>*{min-width:0}
+.uitslag .score{font:600 clamp(3.4rem,9vw,5rem)/.85 var(--f-tekst);letter-spacing:-.05em;color:var(--zalm-d);font-variant-numeric:tabular-nums;white-space:nowrap}
+.uitslag .score small{font-size:.34em;color:var(--inkt);letter-spacing:-.02em}
+.uitslag p{font-size:1.1rem;max-width:46ch}
+.uitslag p b{display:block;margin-top:6px}
+.grootfoto img{width:100%;aspect-ratio:4/5;object-fit:cover;border:var(--lijn)}
+@media (max-width:860px){.grootfoto img{aspect-ratio:3/2}}
+@media (max-width:520px){.uitslag{grid-template-columns:1fr;gap:8px}}
+
+/* rode draad: de folder tot leven */
+.fotobak{position:relative}
+.fotobak .folder{position:absolute;left:-30px;bottom:-26px;width:min(240px,64%);transform:rotate(-5deg)}
+.grootfoto .bijschrift{margin-top:18px}
+.echt{list-style:none;padding:0;margin-top:34px;border-bottom:var(--lijn)}
+.echt li{display:grid;grid-template-columns:minmax(0,.75fr) 36px minmax(0,1.7fr);gap:18px;align-items:center;padding-block:24px;border-top:var(--lijn)}
+.echt .pijl{font-size:1.8rem;text-align:center;line-height:1}
+.echt .straat{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;text-decoration:none}
+.echt .straat img{aspect-ratio:3/2;object-fit:cover;border:var(--lijn);width:100%}
+.echt .straat b{display:block;font-size:1.3rem;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin-block:6px}
+.echt a.straat:hover b{text-decoration:underline;text-decoration-color:var(--zalm);text-decoration-thickness:3px}
+.wenk5{margin-top:26px;display:grid;grid-template-columns:minmax(0,.75fr) 36px minmax(0,1.7fr);gap:18px;align-items:center}
+.wenk5 .groot{max-width:none;font-weight:500}
+@media (max-width:860px){
+  .fotobak .folder{left:10px}
+  .echt li,.wenk5{grid-template-columns:1fr;gap:10px}
+  .echt .pijl{text-align:left;transform:rotate(90deg);width:28px}
+  .echt .straat{grid-template-columns:120px minmax(0,1fr);gap:14px}
+}
+
+/* poppetjes lopen uit de folder */
+.loopje{margin-top:26px}
+.loopje svg{display:block;width:100%;height:auto;max-height:340px}
+.loopje-voet{display:flex;justify-content:space-between;margin-top:6px;color:var(--inkt2)}
+.pop{color:var(--c);fill:currentColor;stroke:currentColor;transform:translate(var(--x),0)}
+.pop .kj{fill:var(--kaart)}
+.pop .been,.pop .arm{transform-box:fill-box}
+.pop .been{transform-origin:50% 0}
+.pop .arm{transform-origin:0 0}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:uitdefolder 14s linear var(--d) infinite both}
+  .pop .been.a{animation:stap 14s linear var(--d) infinite both}
+  .pop .been.b{animation:stap2 14s linear var(--d) infinite both}
+  .pop .arm{animation:zwaai 14s ease-in-out var(--d) infinite both}
+}
+@keyframes uitdefolder{
+  0%{transform:translate(206px,0);opacity:0;color:var(--grijs)}
+  3%{opacity:1;color:var(--grijs)}
+  9%{color:var(--grijs)}
+  15%{color:var(--c)}
+  30%{transform:translate(var(--x),0)}
+  94%{transform:translate(var(--x),0);opacity:1;color:var(--c)}
+  100%{transform:translate(var(--x),0);opacity:0;color:var(--c)}
+}
+@keyframes stap{0%,30%,100%{transform:rotate(0)}3%,9%,15%,21%,27%{transform:rotate(22deg)}6%,12%,18%,24%{transform:rotate(-22deg)}}
+@keyframes stap2{0%,30%,100%{transform:rotate(0)}3%,9%,15%,21%,27%{transform:rotate(-22deg)}6%,12%,18%,24%{transform:rotate(22deg)}}
+@keyframes zwaai{0%,36%,62%,100%{transform:rotate(0)}40%,48%,56%{transform:rotate(-150deg)}44%,52%{transform:rotate(-115deg)}}
+</style>
+</head><body>
+
+<header class="kop"><div class="wrap">
+  <a class="wm" href="index.html">gevaarlijk <span>spel.</span></a>
+  <nav class="mono" aria-label="hoofdmenu"><a href="programmas.html">programma’s</a><a href="cases.html">cases</a><a href="voor-wie.html">voor wie</a><a href="#contact">contact</a></nav>
+</div></header>
+
+<main>
+<section class="topband"><div class="wrap">
+  <div class="toneel kaal" id="folderanim"></div>
+  <p class="topzin">de folder zegt het. <span class="z">wij maken het echt.</span></p>
+  <p class="mono bijschrift" style="margin-top:8px">de folder: het boekje ‘Bereid je voor op een noodsituatie’ van de Rijksoverheid</p>
+</div></section>
+<section class="opening" id="start"><div class="wrap start-grid">
+  <div>
+    <span class="label p">even eerlijk</span>
+    <h1 style="margin-top:18px;font-size:clamp(2.4rem,6.6vw,4.6rem)">voorbereid. maar heb je al <span class="z">geoefend?</span></h1>
+    <p class="groot" style="margin-top:18px">Een noodpakket in de kast is één ding. Weten wat je moet doen als er echt iets gebeurt is iets anders. Drie vragen:</p>
+    <ol class="toets">
+      <li><span>Heb je weleens expres een avond zonder stroom doorgebracht?</span><div class="jn" role="group" aria-label="avond zonder stroom"><button type="button" id="q1-ja" data-q="1" data-v="1" aria-pressed="false">ja</button><button type="button" id="q1-nee" data-q="1" data-v="0" aria-pressed="false">nee</button></div></li>
+      <li><span>Vind je je zaklamp in het donker, zonder te zoeken?</span><div class="jn" role="group" aria-label="zaklamp"><button type="button" id="q2-ja" data-q="2" data-v="1" aria-pressed="false">ja</button><button type="button" id="q2-nee" data-q="2" data-v="0" aria-pressed="false">nee</button></div></li>
+      <li><span>Heb je met je buren afgesproken wie bij wie aanklopt?</span><div class="jn" role="group" aria-label="buren"><button type="button" id="q3-ja" data-q="3" data-v="1" aria-pressed="false">ja</button><button type="button" id="q3-nee" data-q="3" data-v="0" aria-pressed="false">nee</button></div></li>
+    </ol>
+    <div class="uitslag" aria-live="polite">
+      <div class="score"><span id="score">–</span><small> van 3 geoefend</small></div>
+      <p id="uitslagtekst">Denk vooruit vraagt om een noodpakket, een noodplan en elkaar helpen. Wij vragen of je het ook weleens hebt gedaan.</p>
+    </div>
+    <div class="sla"><a class="knop" href="#aanbod">zo krijgen wij een straat in beweging ↓</a></div>
+  </div>
+  <div class="grootfoto">
+    <div class="fotobak">
+      <img src="img/v5-1.jpg" alt="Een rij buren op de stoep doet tegelijk dezelfde beweging na, met koptelefoons op">
+    </div>
+    <p class="mono bijschrift">silent noodshow · festival voor de vloed, dordrecht</p>
+  </div>
+</div></section>
+</main>
+
+<!-- aanbod -->
+<section class="hero2" id="aanbod"><div class="wrap">
+  <div class="toneel kaal" id="dansrij" style="margin-bottom:34px"></div>
+  <span class="label p">voor gemeenten, veiligheidsregio’s en scholen</span>
+  <h2 style="margin-top:16px;font-size:var(--s4)">hoe krijg je mensen in <span class="z">beweging?</span></h2>
+  <p class="groot" style="margin-top:20px">Denk vooruit zorgt dat mensen zich voorbereiden. Wij laten ze oefenen: een middag op straat waarin de folder tot leven komt, met de buren erbij en een meting voor en na die in jouw rapportage past.</p>
+  <p class="mono" style="margin-top:44px">de cijfers</p>
+  <div class="cijfers" style="margin-top:12px">
+    <div><div class="b">44%</div><p>van de Nederlanders heeft een noodpakket. Dat is meer dan vorig jaar, dankzij de campagne.</p></div>
+    <div><div class="b">56%</div><p>heeft er dus geen, ook na een landelijke campagne. Weten is het probleem niet. Doen wel.</p></div>
+    <div><div class="b">2027</div><p>structureel budget voor weerbaarheid bij regio’s en gemeenten. Met dat budget kun je het gat tussen weten en doen dichten, bijvoorbeeld met een van onze programma’s.</p></div>
+  </div>
+  <p class="mono bijschrift" style="margin-top:14px">bron: Rijksoverheid, onderzoek bij de campagne Denk vooruit, april 2026</p>
+</div></section>
+
+<div class="breker rechts"><div class="wrap"><figure class="toneel kaal eenmaal" data-oef="zandzakken"></figure><p class="mono">het begint met voorbereiden, samen ↓</p></div></div>
+<section class="sec"><div class="wrap">
+  <div class="twee">
+    <div>
+      <span class="label">wat we doen</span>
+      <h2 style="margin-top:14px">De Silent Noodshow: een straat, een middag, een spel waarbij je elkaar nodig <span class="z">hebt.</span></h2>
+      <p style="font-size:1.12rem;margin-top:20px;max-width:52ch">Samen met je buren. Je krijgt een koptelefoon, een keycord en een kaartje. Daarop staat waar je vandaag woont en hoe hoog het water daar komt. Een stem praat je in een kwartier door een overstroming. “Pling! Het water staat hier straks tot 2,5 meter hoog! Denkbeeldig hè, denkbeeldig.”</p>
+      <p style="font-size:1.12rem;margin-top:12px;max-width:52ch">Heb je een noodpakket? Hangt er een evacuatieplan in je meterkast? Wie dat niet heeft, merkt het meteen, en moet het zonder woorden met de buren oplossen.</p>
+      <p style="font-size:1.12rem;margin-top:12px;max-width:52ch">De Silent Noodshow is een van de programma’s die wij ontwikkeld hebben om buren spelenderwijs bij elkaar te brengen rondom het thema voorbereiding op noodsituaties.</p>
+    </div>
+    <div><img class="foto" src="img/v5-1.jpg" alt="Een rij buren op de stoep doet tegelijk dezelfde beweging na, met koptelefoons op"><p class="mono bijschrift">silent noodshow · festival voor de vloed</p></div>
+  </div>
+</div></section>
+
+<div class="breker links"><div class="wrap"><figure class="toneel kaal eenmaal" data-oef="meterkast"></figure><p class="mono">weten waar je plan hangt ↓</p></div></div>
+<section class="sec" id="programmas"><div class="wrap">
+  <div class="sec-kop">
+    <span class="label">wat je afneemt</span>
+    <h2>acht programma’s, vijf scenario’s, van een kwartier tot een <span class="z">week.</span></h2>
+    </div>
+  <div class="scenrij" id="scenrij" style="margin-bottom:30px"></div>
+  <div class="prog" id="proglijst"></div>
+  <div class="afspraak">
+    <div><p class="mono z">jij regelt</p><p>Een plein of school, de bewonersbrief, en iemand van de gemeente die erbij is.</p></div>
+    <div><p class="mono z">wij brengen</p><p>Spelleiders, acteurs, materiaal en de meting. Binnen twee weken krijg je één resultaatkaart: drie cijfers voor en na, een foto en een uitspraak van een bewoner.</p></div>
+    <div><p class="mono z">prijs</p><p>Op aanvraag. Je krijgt een voorstel dat past bij je locatie, doelgroep en budget.</p></div>
+  </div>
+  <div class="opmaat">
+    <div><span class="label p">staat jouw vraag er niet tussen?</span><h3 style="margin-top:12px">we ontwikkelen ook op maat.</h3></div>
+    <p>Heb je een idee voor een eigen scenario, doelgroep of plek? Dan bouwen onze makers en spelleiders er een programma voor, van eerste idee tot spelmateriaal uit onze eigen werkplaats. Zo maakten we het overstromingsscenario van <a href="cases.html#risk-factory">de Risk Factory</a>, de <a href="cases.html#hoog-en-droog">Hoog &amp; Droog Zolderroute</a> en de kunstinstallatie <a href="cases.html#golden-connection">The Golden Connection</a> over het thema PFAS.</p>
+    <a class="knop" href="#contact">vertel ons je vraag</a>
+  </div>
+  <p style="margin-top:28px"><a class="knop leeg" href="programmas.html">alle programma’s in detail →</a></p>
+</div></section>
+
+<div class="breker breed"><div class="wrap"><p class="mono">samen omhoog als het water komt ↓</p></div><figure class="toneel kaal eenmaal breedbeeld" data-oef="trapbreed"></figure></div>
+<section class="sec bewijs" id="bewijs"><div class="wrap twee">
+  <div>
+    <span class="label">voorbeelden</span>
+    <div class="groot-getal" style="margin-top:20px">4<small> edities</small></div>
+    <p style="font-size:1.2rem;margin-top:12px"><b>Festival Voor de Vloed</b> in Dordrecht, waar deze programma’s zijn ontstaan en getest.</p>
+        <p style="margin-top:16px">Het festival is een initiatief van Stichting Lexlab, samen met gemeente Dordrecht en Waterschap Hollandse Delta. Voor Veiligheidsregio Zuid-Holland Zuid bouwden we het waterscenario van de Risk Factory, en voor GGD Zuid-Holland Zuid een reizende installatie over PFAS.</p>
+    <p style="margin-top:20px"><a class="knop leeg" href="cases.html">bekijk de cases →</a></p>
+  </div>
+  <img class="foto" src="img/v5-7.jpg" alt="Zandzakken opgestapeld in een winkelstraat, voorbijgangers lopen erlangs" loading="lazy">
+</div></section>
+
+<div class="breker links"><div class="wrap"><figure class="toneel kaal eenmaal" data-oef="soep"></figure><p class="mono">een week uitzitten, met soep ↓</p></div></div>
+<section class="sec"><div class="wrap twee">
+  <div class="stem">
+    <span class="label p" style="justify-self:start">zo klinkt de folder als hij tot leven komt</span>
+    <p>“Luister naar mijn stem, doe wat ik zeg en er kan je niks gebeuren. Beloofd.”</p>
+    <p>“Heb jij een noodpakket klaarliggen? Eten, drinken, dekens, wc-papier. Als dat nu nog ergens te vinden is. Weet je nog, tijdens corona?”</p>
+    <p>“Loop met een zaklamp naar de meterkast, doe hem open en check of er een evacuatieplan hangt.”</p>
+    <p class="mono" style="color:var(--inkt2)">uit het script van de Silent Noodshow</p>
+  </div>
+  <div class="hek" role="img" aria-label="Voorbeeld van een hekbord: zaterdag 14.00, pas op: hier wordt geoefend. Jij doet toch ook mee?">
+    <span class="label p" style="align-self:flex-start">zaterdag · 14.00</span>
+    <div class="big">pas op: hier wordt geoefend.</div>
+    <p><b>Jij doet toch ook mee?</b></p>
+  </div>
+</div></section>
+
+<section class="sec" id="hoe"><div class="wrap">
+  <div class="twee" style="align-items:end;margin-bottom:30px"><div class="sec-kop" style="margin-bottom:0"><span class="label">hoe werkt het</span><h2>van eerste gesprek tot resultaat in zes <span class="z">weken.</span></h2><p class="groot">We meten in het spel zelf, niet met een vragenlijst achteraf. Deelnemers laten voor en na zien waar ze staan op noodpakket, noodplan en elkaar helpen: met een stip, een stap opzij of een hand omhoog. Welke vorm past, kiezen we per programma. Het verschil zie je ter plekke.</p></div><div class="toneel metingbeeld" id="metingbeeld"></div></div>
+  <ol class="stappen">
+    <li data-week="1"><b>Programma op maat</b>Met een van onze spelleiders stel je een programma samen: welk scenario, welke wijk of school, wat er in jouw rapportage moet staan.</li>
+    <li data-week="1–2"><b>Keuze en datum</b>Module, locatie en datum, rond de campagnemomenten van Denk vooruit in juni en oktober.</li>
+    <li data-week="4"><b>De oefening</b>Wij komen met team en materiaal. Jij levert de locatie en de bewonersbrief. Indien nodig helpen we hierbij graag.</li>
+    <li data-week="6"><b>Resultaat</b>Geen dik rapport. Eén kaart met drie cijfers voor en na, een foto en een uitspraak van een bewoner. Past zo in de raadsbrief.</li>
+  </ol>
+</div></section>
+
+<div class="breker breed"><div class="wrap"><p class="mono">en gevonden worden ↓</p></div><figure class="toneel kaal eenmaal breedbeeld" data-oef="vlagbreed"></figure></div>
+<section class="sec" id="voorjou"><div class="wrap">
+  <div class="sec-kop"><span class="label">voor wie</span><h2>van één straat tot de hele <span class="z">stad.</span></h2><p class="groot" style="max-width:58ch">We denken mee op wijk- en stadsniveau en sluiten aan op jullie doelen voor een weerbare samenleving: inwoners die een noodpakket en een noodplan hebben, en buren die elkaar weten te vinden.</p></div>
+  <div class="voorjou">
+    <a href="voor-wie.html#gemeente" data-groep="gemeente"><i style="background:var(--groen)"></i><b>Gemeente</b><span>Weerbaarheid in de wijk, met cijfers voor de raad.</span></a>
+    <a href="voor-wie.html#regio" data-groep="regio"><i style="background:var(--blauw)"></i><b>Veiligheidsregio</b><span>Het 2027-budget lokaal laten landen, in meerdere gemeenten.</span></a>
+    <a href="voor-wie.html#school" data-groep="school"><i style="background:var(--paars)"></i><b>School</b><span>Trainen op het Vloedcamp, of een stad bouwen die tegen water kan.</span></a>
+    <a href="voor-wie.html#buurt" data-groep="buurt"><i style="background:var(--zalm)"></i><b>Buurt of organisatie</b><span>Een middag met de straat, via het buurthuis of de gemeente.</span></a>
+  </div>
+</div></section>
+
+<section class="sec" id="contact"><div class="wrap twee">
+  <div>
+    <h2>stel met onze spelleiders een programma samen voor jouw <span class="z">case.</span></h2>
+    <p style="margin-top:16px;max-width:50ch">Vertel ons over jouw wijk, school of regio. In een eerste gesprek van een half uur zetten we samen een opzet neer: welk scenario, welke programma’s en wat het moet opleveren.</p>
+    <dl class="bereik">
+      <dt class="mono">bel</dt><dd>078 204 95 13</dd>
+    </dl>
+  </div>
+  <form class="terugbel" id="terugbel" novalidate>
+    <span class="label p">liever dat wij bellen?</span>
+    <label for="tb-naam"><span class="mono">naam</span><input id="tb-naam" name="naam" type="text" autocomplete="name" required></label>
+    <label for="tb-org"><span class="mono">gemeente, regio of school</span><input id="tb-org" name="org" type="text" autocomplete="organization"></label>
+    <label for="tb-tel"><span class="mono">telefoonnummer</span><input id="tb-tel" name="tel" type="tel" autocomplete="tel" required></label>
+    <label for="tb-wanneer"><span class="mono">wanneer schikt het</span><input id="tb-wanneer" name="wanneer" type="text" placeholder="bijvoorbeeld dinsdagmiddag"></label>
+    <input type="text" name="website" id="tb-website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+    <button class="knop" type="submit" id="tb-knop">bel mij terug</button>
+    <p class="mono" id="tb-melding" role="status">we bellen je zo snel mogelijk terug.</p>
+  </form>
+</div></section>
+
+<footer class="voet"><div class="wrap">
+  <p class="mono" style="line-height:1.9">gevaarlijk spel is een programma van Stichting Lexlab en Tolly Wolly Studio, Dordrecht. Ontstaan uit Festival Voor de Vloed.</p>
+</div></footer>
+
+
+<script src="figuren.js"></script>
+<script src="gs.js"></script>
+<script>
+(function(){
+  document.getElementById('proglijst').innerHTML=GS.P.map(function(p){return GS.kaart(p,true);}).join('');
+  GS.brekers();
+  GS.scenrij(document.getElementById('scenrij'),false,true);
+  var mb=document.getElementById('metingbeeld');if(mb)mb.innerHTML=GSF.scene('meting');
+  GSF.folder(document.getElementById('folderanim'));
+  GSF.dans(document.getElementById('dansrij'));
+  var g=GS.store('gs-groep');
+  if(g)document.querySelectorAll('.voorjou a').forEach(function(a){a.classList.toggle('mijn',a.dataset.groep===g);});
+
+  // terugbelverzoek: gaat via terugbel.php per mail naar het team
+  var tf=document.getElementById('terugbel'), tm=document.getElementById('tb-melding'), tk=document.getElementById('tb-knop');
+  tf.addEventListener('submit',function(e){
+    e.preventDefault();
+    var n=document.getElementById('tb-naam').value.trim(), t=document.getElementById('tb-tel').value.trim();
+    if(!n||!t){tm.textContent='vul je naam en telefoonnummer in.';return;}
+    tk.disabled=true;tm.textContent='versturen…';
+    fetch('terugbel.php',{method:'POST',body:new FormData(tf)}).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(d){
+      if(d&&d.ok){tf.reset();tm.textContent='gelukt. we bellen je zo snel mogelijk terug.';}else{return Promise.reject();}
+    }).catch(function(){tm.textContent='versturen lukte niet. bel ons op 078 204 95 13.';}).then(function(){tk.disabled=false;});
+  });
+
+  // de toets
+  var ant={}, score=document.getElementById('score'), tekst=document.getElementById('uitslagtekst');
+  var slot='Een pakket koop je. Oefenen doe je samen. Daar hebben wij een middag voor.';
+  function uitslag(){
+    var k=Object.keys(ant); if(k.length<3)return;
+    var n=k.reduce(function(s,q){return s+ant[q];},0);
+    score.textContent=n;
+    var t = n===0 ? 'Je bent niet de enige. Bijna niemand oefent, ook wie een noodpakket in de kast heeft staan.'
+          : n===3 ? 'Dan heb je het al eens gedaan. Je buren waarschijnlijk niet.'
+          : 'Een begin. De meeste mensen komen niet verder dan het pakket in de kast.';
+    tekst.textContent=t+' ';
+    var b=document.createElement('b'); b.textContent=slot; tekst.appendChild(b);
+  }
+  document.querySelectorAll('.jn button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      ant[btn.dataset.q]=Number(btn.dataset.v);
+      btn.parentNode.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',String(x===btn));});
+      uitslag();
+    });
+  });
+})();
+</script>
+</body></html>
