@@ -29,7 +29,6 @@
 .past a{border:var(--lijn);padding:7px 12px;border-radius:999px;text-decoration:none;background:var(--kaart);font-weight:500}
 .past a:hover{background:#fff}
 .zin{font-size:1.25rem;max-width:48ch;margin-top:12px}
-.groep.mijn{background:linear-gradient(90deg,#fde7c5 0,#fde7c5 6px,transparent 6px)}
 @media (max-width:860px){.tabs{grid-template-columns:1fr 1fr}.groep{grid-template-columns:1fr;gap:12px}.groep .koord{height:10px;width:100px}.drie{grid-template-columns:1fr}}
 </style></head><body>
 <header class="kop"><div class="wrap">
@@ -110,7 +109,7 @@
 
 <section class="wrap" style="padding-block:20px 80px">
   <div class="twee" style="border-top:var(--lijn);padding-top:30px">
-    <div><h2>herken je jezelf niet?</h2><p style="margin-top:12px;max-width:46ch">Waterschappen, woningcorporaties en zorgorganisaties spelen ook mee. Bel, dan zoeken we uit welk programma bij je past.</p></div>
+    <div><h2>kan ik ook <span class="z">meespelen?</span></h2><p style="margin-top:12px;max-width:46ch">Ja, iedereen mag meedoen. Waterschap, woningcorporatie, zorgorganisatie, werkgever of buurtvereniging. Past geen van onze programma’s precies bij jou? Laat het weten, dan bedenken we samen iets leuks. Voor een fabriek of bouwplaats maken we bijvoorbeeld van de ontruimings- of BHV-oefening een spel.</p></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><a class="knop" href="index.html#contact">plan een gesprek</a></div>
   </div>
 </section>
@@ -126,7 +125,6 @@
   var g=(location.hash||'').slice(1)||GS.store('gs-groep');
   function zet(id){
     document.querySelectorAll('.tabs a').forEach(function(a){a.setAttribute('aria-current',String(a.dataset.g===id));});
-    document.querySelectorAll('.groep').forEach(function(s){s.classList.toggle('mijn',s.id===id);});
   }
   if(g&&GS.GROEP[g]){zet(g);var el=document.getElementById(g);if(location.hash)setTimeout(function(){el.scrollIntoView();},50);}
   document.querySelectorAll('.tabs a').forEach(function(a){a.addEventListener('click',function(){zet(a.dataset.g);GS.store('gs-groep',a.dataset.g);});});
