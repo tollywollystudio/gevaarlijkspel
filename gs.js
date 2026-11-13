@@ -64,6 +64,20 @@ var GS = (function(){
       '<span class="scens">'+p.scen.map(scenHtml).join('')+'</span></'+tag+'>';
     return h;
   }
+  function detail(p){
+    return '<article class="pd" id="'+p.id+'" data-scen="'+p.scen.join(' ')+'" data-voor="'+p.voor.join(' ')+'">'+
+      '<div><div class="nr">'+p.nr+'</div><div class="meta mono"><span>'+esc(p.waar)+'</span><span>'+esc(p.duur)+'</span>'+(p.nieuw?'<span class="z">in ontwikkeling</span>':'')+'</div>'+
+      (p.foto?'<img class="pfoto" src="'+p.foto[0]+'" alt="'+esc(p.foto[1])+'" loading="lazy">':'<div class="toneel pscene'+(p.oef?' eenmaal':'')+'">'+(p.oef?GSF.oefening(p.oef):GSF.scene(p.scen[0]))+'</div>'+(p.oef?'<p class="mono bijschrift">'+GSF.oefeningNaam(p.oef)+'</p>':''))+'</div>'+
+      '<div><h2>'+esc(p.naam)+'</h2><p class="groot" style="margin-top:10px;max-width:60ch">'+esc(p.kort)+'</p>'+
+      '<div class="scens">'+p.scen.map(scenHtml).join('')+'</div>'+
+      '<div class="kolommen"><div><p class="mono">wat er gebeurt</p><p>'+esc(p.wat)+'</p></div>'+
+      '<div><p class="mono">jij regelt</p><p>'+esc(p.jij)+'</p></div>'+
+      '<div><p class="mono">wat het oplevert</p><p>'+esc(p.op)+'</p></div></div>'+
+      (p.citaat?'<blockquote class="getuige"><p>“'+esc(p.citaat[0])+'”</p><footer class="mono">'+esc(p.citaat[1])+'</footer></blockquote>':'')+
+      '<p class="mono" style="margin-top:16px;color:var(--inkt2)">voor: '+p.voor.map(function(v){return GROEP[v].naam;}).join(' · ')+'</p></div></article>';
+  }
+  function detailLijst(){return P.map(detail).join('')+'<p class="leeg-melding" id="leeg" hidden>Geen programma met deze combinatie. Haal een filter weg, of bel ons: vaak kan een programma in een ander scenario gespeeld worden.</p>';}
+  function kaartLijst(){return P.map(function(p){return kaart(p,true);}).join('');}
   function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
   function kopieer(btn){
     btn.addEventListener('click',function(){
@@ -82,5 +96,5 @@ var GS = (function(){
     if(typeof GSF!=='undefined'&&!document.querySelector('.breker')){GSF.defs();var plek=['right:9%','right:27%','right:4%','right:18%','right:34%'];
       document.querySelectorAll('.sec, .hero2').forEach(function(sec,i){if(sec.id==='licht')return;var b=document.createElement('span');b.className='buur';b.setAttribute('style',plek[i%plek.length]);b.innerHTML=GSF.los(i);sec.insertBefore(b,sec.firstChild);});}
   });
-  return {brekers:brekers, oefenrij:oefenrij, scenrij:scenrij, P:P, SCEN:SCEN, GROEP:GROEP, kaart:kaart, scenHtml:scenHtml, esc:esc, store:store};
+  return {detail:detail, detailLijst:detailLijst, kaartLijst:kaartLijst, brekers:brekers, oefenrij:oefenrij, scenrij:scenrij, P:P, SCEN:SCEN, GROEP:GROEP, kaart:kaart, scenHtml:scenHtml, esc:esc, store:store};
 })();

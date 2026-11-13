@@ -1,0 +1,7 @@
+# Iedereen welkom, ook zoekmachines en AI-assistenten.
+User-agent: *
+Allow: /
+Disallow: /terugbel.php
+Disallow: /tools/
+
+Sitemap: https://www.gevaarlijkspel.nl/sitemap.xml
