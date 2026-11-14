@@ -62,4 +62,4 @@ jobs:
           done
           test -n "$DOEL" || { echo "Geen webmap gevonden. Zie de lijst hierboven voor wat er in de startmap staat."; exit 1; }
           echo "Webmap: $DOEL"
-          L "mirror --reverse --verbose --only-newer --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude README.md ./ $DOEL/"
+          L "mirror --reverse --verbose --only-newer --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude README.md --exclude-glob tools/ ./ $DOEL/"

@@ -32,6 +32,8 @@ function vul(bestand, naam, html) {
   const base = 'http://localhost:' + server.address().port + '/';
   const browser = await chromium.launch();
   const page = await browser.newPage();
+  // alleen lokale bestanden, geen statistieken of andere externe verzoeken
+  await page.route('**/*', r => r.request().url().startsWith(base) ? r.continue() : r.abort());
   await page.goto(base + 'programmas.html');
   const { detail, kaarten, P } = await page.evaluate(() => ({
     detail: GS.detailLijst(), kaarten: GS.kaartLijst(),

@@ -4,7 +4,7 @@ import os, sys, ssl, ftplib
 
 HOST = os.environ["SFTP_HOST"]; GEBRUIKER = os.environ["SFTP_GEBRUIKER"]; WACHTWOORD = os.environ["SFTP_WACHTWOORD"]
 MAPPEN = ["domains/gevaarlijkspel.nl/public_html", "public_html", "private_html", "httpdocs", "www"]
-SLA_OVER = {".git", ".github", "README.md"}
+SLA_OVER = {".git", ".github", "README.md", "tools"}
 
 def bestanden():
     for basis, mappen, namen in os.walk("."):
